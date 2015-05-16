@@ -1,8 +1,8 @@
 ## SIMP Rsync
 
-This is the rsync submodule for material that SIMP serves out via rsync by default.
+This is the 4.2 series of the SIMP rsync submodule.
 
-The different releases are tracked on their own branches and the master branch
-should generally be ignored.
+This branch supports RHEL/CentOS 6.6
 
-This will change in the future when we merge the two branches into a single distribution.
+When updating these directories, you *must* ensure that you update the
+.rsync.facl file appropriately!

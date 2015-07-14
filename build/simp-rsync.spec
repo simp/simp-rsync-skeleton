@@ -1,14 +1,15 @@
 %global selinux_policyver %(%{__sed} -e %'s,.*selinux-policy-\\([^/]*\\)/.*,\\1,' %/usr/share/selinux/devel/policyhelp 2>/dev/null || echo 0.0.0)
 %global selinux_variants targeted
 %global _binaries_in_noarch_packages_terminate_build 0
+%global current_date %(date)
 
-Summary: SIMP rsync repository
+Summary: SIMP Rsync Repository
 Name: simp-rsync
 Version: 4.2.0
-Release: 0
+Release: 1%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
-Source: %{name}-%{version}-%{release}.tar.gz
+Source: %{name}-%{version}-1.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
 Requires: acl
@@ -27,8 +28,18 @@ BuildRequires: selinux-policy-targeted
 
 Prefix: /srv/rsync
 
+%package clamav
+Summary: SIMP ClamAV Rsync Repository
+License: GPLv2
+Requires: simp-rsync >= %{version}-%{release}
+Prefix: /srv/rsync/clamav
+
 %description
-Contains configuration scripts to bootstrap a SIMP server.
+Contains SIMP items that are likely to be manipulated by the user and/or too
+large to transfer via Puppet.
+
+%description clamav
+Contains a copy of the latest ClamAV DAT files as of %{current_date}.
 
 %prep
 %setup -q
@@ -45,8 +56,13 @@ install -p -m 644 -D build/selinux/%{name}.pp %{buildroot}/%{_datadir}/selinux/p
 
 mkdir -p %{buildroot}/%{prefix}
 
-# Install all items but ignore the build components.
-tar --exclude-vcs --exclude=.selinux --exclude=Rakefile --exclude=build --exclude=build -cf - . | (cd %{buildroot}/%{prefix} && tar -xBf -)
+# Install all items but ignore the build components and the material in the sub-RPMs
+tar --exclude-vcs \
+  --exclude=.selinux \
+  --exclude=Rakefile \
+  --exclude=build \
+  --exclude=dist \
+  -cf - . | (cd %{buildroot}/%{prefix} && tar -xBf -)
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
@@ -56,16 +72,23 @@ tar --exclude-vcs --exclude=.selinux --exclude=Rakefile --exclude=build --exclud
 %config(noreplace) %{prefix}
 %{_datadir}/selinux/*/%{name}.pp
 
+%files clamav
+%defattr(0640,root,root,0750)
+%config(noreplace) %{prefix}
+
 %pre
 #!/bin/sh
 # Remove the directories that we're going to replace with symlinks.
 if [ -d %{prefix}/tftpboot/linux-install ]; then
   pushd .;
   cd %{prefix}/tftpboot/linux-install;
-  rm -rf rhel{5,6}_i386;
-  rm -rf rhel{5,6}_x86_64;
+  rm -rf rhel{5,6,7}_i386;
+  rm -rf rhel{5,6,7}_x86_64;
   popd;
 fi
+
+%pre clamav
+#!/bin/sh
 
 %post
 #!/bin/sh
@@ -113,6 +136,11 @@ if [ -f %{prefix}/default/global_etc/cron.weekly/checkdev.cron ]; then
   rm %{prefix}/default/global_etc/cron.weekly/checkdev.cron;
 fi
 
+%post clamav
+cd /srv/rsync
+setfacl --restore=.rsync.facl;
+restorecon -R %{prefix}
+
 %postun
 # Post uninstall stuff
 if [ $1 -eq 0 ] ; then
@@ -124,6 +152,10 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %changelog
+* Mon Jul 13 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.0-1
+- Added a ClamAV specific RPM to handle the different license in ClamAV.
+- These should eventually be split.
+
 * Fri May 15 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.0-0
 - Removed everything that *may* fall under a conflicting license. We will need
   to evaluate how to handle package building going forward.

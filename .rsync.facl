@@ -5,6 +5,27 @@ user::rwx
 group::r-x
 other::---
 
+# file: CONTRIBUTING.md
+# owner: root
+# group: root
+user::rwx
+group::r--
+other::r--
+
+# file: LICENSE
+# owner: root
+# group: root
+user::rwx
+group::r--
+other::r--
+
+# file: README.md
+# owner: root
+# group: root
+user::rwx
+group::r--
+other::r--
+
 # file: RedHat
 # owner: root
 # group: root
@@ -46,13 +67,6 @@ other::---
 user::rwx
 group::r-x
 other::---
-
-# file: RedHat/7/bind_dns/default/named/dev
-# owner: root
-# group: root
-user::rwx
-group::r-x
-other::r-x
 
 # file: RedHat/7/bind_dns/default/named/var
 # owner: root
@@ -180,20 +194,6 @@ user::rw-
 group::r--
 other::---
 
-# file: RedHat/7/bind_dns/default/named/var/tmp
-# owner: root
-# group: 25
-user::rwx
-group::r-x
-other::---
-
-# file: RedHat/7/bind_dns/default/named/var/log
-# owner: root
-# group: 25
-user::rwx
-group::r-x
-other::---
-
 # file: RedHat/7/bind_dns/default/named/var/run
 # owner: root
 # group: 25
@@ -213,13 +213,6 @@ other::---
 # group: 25
 user::rw-
 group::r--
-other::---
-
-# file: RedHat/7/bind_dns/default/named/var/run/dbus
-# owner: root
-# group: 25
-user::rwx
-group::r-x
 other::---
 
 # file: RedHat/7/bind_dns/default/named/etc

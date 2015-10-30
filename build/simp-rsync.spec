@@ -6,10 +6,10 @@
 Summary: SIMP Rsync Repository
 Name: simp-rsync
 Version: 4.2.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
-Source: %{name}-%{version}-1.tar.gz
+Source: %{name}-%{version}-2.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
 Requires: acl
@@ -106,16 +106,20 @@ fi
 # Post installation stuff
 
 # Make sure upgrades work properly!
-pushd .;
-cd %{prefix};
-tmpdir=`ls domains | grep -v your.domain | head -1`;
-if [ -n "domains/$tmpdir" ]; then
-  cd "domains/$tmpdir";
-  /bin/cp -a * ../../bind_dns/default;
-  cd -;
-  rm -rf domains;
+if [ $1 == 2 ]; then
+  if [ -d "%{prefix}/domains" ]; then
+    pushd .;
+    cd %{prefix};
+    tmpdir=`ls domains | grep -v your.domain | head -1`;
+    if [ -n "domains/$tmpdir" ]; then
+      cd "domains/$tmpdir";
+      /bin/cp -a * ../../bind_dns/default;
+      cd -;
+      rm -rf domains;
+    fi
+    popd;
+  fi
 fi
-popd;
 
 /usr/sbin/semodule -n -i %{_datadir}/selinux/packages/%{name}.pp
 if /usr/sbin/selinuxenabled; then
@@ -138,7 +142,9 @@ if [ -f .rsync.facl.rpmnew ]; then
   /bin/mv .rsync.facl.rpmnew .rsync.facl
 fi
 find . -type f -name "*.rpmnew" -exec rm -f {} \;
-setfacl --restore=.rsync.facl;
+# The facl file accounts for several different issues. Ignore any missing
+# files.
+setfacl --restore=.rsync.facl 2>/dev/null;
 
 # Clean up the old checkdev.cron script since it is potentially
 # damaging to network health.
@@ -149,7 +155,9 @@ fi
 
 %post clamav
 cd /srv/rsync
-setfacl --restore=.rsync.facl;
+# The facl file accounts for several different issues. Ignore any missing
+# files.
+setfacl --restore=.rsync.facl 2>/dev/null;
 restorecon -R %{prefix}/clamav
 
 %postun
@@ -163,6 +171,9 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %changelog
+* Fri Oct 30 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.0-2
+- Ensure that spurious error messages are not thrown at package install time.
+
 * Mon Jul 13 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.0-1
 - Added a ClamAV specific RPM to handle the different license in ClamAV.
 - These should eventually be split.

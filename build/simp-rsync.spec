@@ -7,10 +7,10 @@
 Summary: SIMP rsync repository
 Name: simp-rsync
 Version: 5.1.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
-Source: %{name}-%{version}-1.tar.gz
+Source: %{name}-%{version}-2.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
 Requires: acl
@@ -140,7 +140,7 @@ if [ -f .rsync.facl.rpmnew ]; then
   /bin/mv .rsync.facl .rsync.facl.rpmsave
   /bin/mv .rsync.facl.rpmnew .rsync.facl
 fi
-setfacl --restore=.rsync.facl;
+setfacl --restore=.rsync.facl 2>/dev/null;
 
 find . -type f -name "*.rpmnew" -exec rm -f {} \;
 
@@ -168,7 +168,7 @@ fi
 
 %post clamav
 cd %{rsync_dir}
-setfacl --restore=.rsync.facl;
+setfacl --restore=.rsync.facl 2>/dev/null;
 restorecon -R %{prefix}
 
 %preun
@@ -188,6 +188,9 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %changelog
+* Fri Oct 30 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.1.0-2
+- Ensure that spurious error messages are not thrown at package install time.
+
 * Mon Jul 13 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.1.0-1
 - Added a ClamAV specific RPM to handle the different license in ClamAV.
 - These should eventually be split.

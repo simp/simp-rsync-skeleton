@@ -7,10 +7,10 @@
 Summary: SIMP rsync repository
 Name: simp-rsync
 Version: 5.1.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
-Source: %{name}-%{version}-2.tar.gz
+Source: %{name}-%{version}-3.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
 Requires: acl
@@ -22,8 +22,8 @@ Requires(post): policycoreutils
 Requires(post): selinux-policy >= %{selinux_policyver}
 Requires(post): selinux-policy-targeted >= %{selinux_policyver}
 Requires(postun): policycoreutils
-Provides: simp_rsync_filestore
-Obsoletes: simp_rsync_filestore
+Provides: simp_rsync_filestore >= 1.0.0
+Obsoletes: simp_rsync_filestore >= 1.0.0
 Buildarch: noarch
 BuildRequires: selinux-policy-devel
 BuildRequires: selinux-policy-targeted
@@ -172,9 +172,12 @@ setfacl --restore=.rsync.facl 2>/dev/null;
 restorecon -R %{prefix}
 
 %preun
-# Clean up the CentOS link if present
-if [ -h "%{rsync_dir}/CentOS" ]; then
-  unlink "%{rsync_dir}/CentOS";
+# Only do this on uninstall
+if [ $1 -eq 0 ]; then
+  # Clean up the CentOS link if present
+  if [ -h "%{rsync_dir}/CentOS" ]; then
+    unlink "%{rsync_dir}/CentOS";
+  fi
 fi
 
 %postun
@@ -187,7 +190,24 @@ if [ $1 -eq 0 ] ; then
   fi
 fi
 
+%posttrans
+#!/bin/sh
+# This should be removed at some point. It works around older package issues
+# with removing the link incorrectly.
+if [ $1 -eq 0 ]; then
+  cd %{rsync_dir};
+
+  # Create a CentOS link if a directory or link doesn't exist
+  if [ ! -d "CentOS" ] && [ ! -h "CentOS" ]; then
+    ln -sf RedHat CentOS;
+  fi
+fi
+
 %changelog
+* Wed Nov 25 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.1.0-3
+- Fixed 'preun' bug that resulted in the 'CentOS' symlink being removed upon
+  package upgrade.
+
 * Fri Oct 30 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.1.0-2
 - Ensure that spurious error messages are not thrown at package install time.
 

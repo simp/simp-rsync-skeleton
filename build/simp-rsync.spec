@@ -10,7 +10,7 @@ Version: 5.1.0
 Release: 3%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
-Source: %{name}-%{version}-3.tar.gz
+Source: %{name}-%{version}-%{release}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
 Requires: acl

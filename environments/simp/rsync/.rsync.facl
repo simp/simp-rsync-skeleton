@@ -1,0 +1,671 @@
+# file: Global
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::---
+
+# file: Global/mcafee
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::r-x
+
+# file: Global/clamav
+# owner: 409
+# group: 409
+user::rwx
+group::rwx
+other::r-x
+
+# file: Global/clamav/daily.cvd
+# owner: 409
+# group: 409
+user::rw-
+group::rw-
+other::r--
+
+# file: Global/clamav/daily.cld
+# owner: 409
+# group: 409
+user::rw-
+group::rw-
+other::r--
+
+# file: Global/clamav/main.cvd
+# owner: 409
+# group: 409
+user::rw-
+group::rw-
+other::r--
+
+# file: Global/clamav/main.cld
+# owner: 409
+# group: 409
+user::rw-
+group::rw-
+other::r--
+
+# file: Global/clamav/bytecode.cvd
+# owner: 409
+# group: 409
+user::rw-
+group::rw-
+other::r--
+
+# file: Global/clamav/bytecode.cld
+# owner: 409
+# group: 409
+user::rw-
+group::rw-
+other::r--
+
+# file: Global/jenkins_plugins
+# owner: 419
+# group: 419
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/tftpboot
+# owner: root
+# group: nobody
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/tftpboot/linux-install
+# owner: root
+# group: nobody
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/tftpboot/linux-install/README
+# owner: root
+# group: nobody
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/Global/apache
+# owner: root
+# group: root
+user::rwx
+group::---
+other::---
+
+# file: RedHat/Global/apache/www
+# owner: root
+# group: 48
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/apache/www/error
+# owner: root
+# group: 48
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/apache/www/error/include
+# owner: root
+# group: 48
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/apache/www/html
+# owner: root
+# group: 48
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/apache/www/icons
+# owner: root
+# group: 48
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/apache/www/icons/small
+# owner: root
+# group: 48
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/apache/www/cgi-bin
+# owner: root
+# group: 48
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/dhcpd
+# owner: root
+# group: root
+user::rwx
+group::---
+other::---
+
+# file: RedHat/Global/dhcpd/LICENSE
+# owner: root
+# group: root
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/Global/dhcpd/dhcpd.conf
+# owner: root
+# group: root
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/Global/snmp
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/snmp/mibs
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/snmp/dlmod
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/Global/freeradius
+# owner: root
+# group: 95
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns
+# owner: root
+# group: root
+user::rwx
+group::---
+other::---
+
+# file: RedHat/6/bind_dns/LICENSE
+# owner: root
+# group: root
+user::rw-
+group::r--
+other::r--
+
+# file: RedHat/6/bind_dns/default
+# owner: root
+# group: root
+user::rwx
+group::---
+other::---
+
+# file: RedHat/6/bind_dns/default/named
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/dev
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::r-x
+
+# file: RedHat/6/bind_dns/default/named/var
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::r-x
+
+# file: RedHat/6/bind_dns/default/named/var/named
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/named.root
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/named.ip6.local
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/named.broadcast
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/localdomain.zone
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/reverse
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/reverse/0.0.10.db
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/slaves
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/slaves/my.ddns.internal.zone.db
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/slaves/my.slave.internal.zone.db
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/forward
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/forward/your.domain.db
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/localhost.zone
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/data
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/data/named_mem_stats.txt
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/named.local
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/named/named.zero
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/tmp
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/log
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/run
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/run/named
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/run/named/named.pid
+# owner: 25
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/var/run/dbus
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/etc
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::r-x
+
+# file: RedHat/6/bind_dns/default/named/etc/zones
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/6/bind_dns/default/named/etc/zones/your.domain
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/etc/rndc.key
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/6/bind_dns/default/named/etc/named.conf
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/7/bind_dns
+# owner: root
+# group: root
+user::rwx
+group::---
+other::---
+
+# file: RedHat/7/bind_dns/LICENSE
+# owner: root
+# group: root
+user::rwx
+group::---
+other::---
+
+# file: RedHat/7/bind_dns/default
+# owner: root
+# group: root
+user::rwx
+group::---
+other::---
+
+# file: RedHat/7/bind_dns/default/named
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::r-x
+
+# file: RedHat/7/bind_dns/default/named/var/named
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/named.root
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/named.ip6.local
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/named.broadcast
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/localdomain.zone
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/reverse
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/reverse/0.0.10.db
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/slaves
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/slaves/my.ddns.internal.zone.db
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/slaves/my.slave.internal.zone.db
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/forward
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/forward/your.domain.db
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/localhost.zone
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/data
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/data/named_mem_stats.txt
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/named.local
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/named/named.zero
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/run
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/run/named
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/7/bind_dns/default/named/var/run/named/named.pid
+# owner: 25
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/etc
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::r-x
+
+# file: RedHat/7/bind_dns/default/named/etc/zones
+# owner: root
+# group: 25
+user::rwx
+group::r-x
+other::---
+
+# file: RedHat/7/bind_dns/default/named/etc/zones/your.domain
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/etc/rndc.key
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---
+
+# file: RedHat/7/bind_dns/default/named/etc/named.conf
+# owner: root
+# group: 25
+user::rw-
+group::r--
+other::---

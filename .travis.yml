@@ -1,0 +1,9 @@
+# Note: There aren't any tests for simp-rsync right now.  However, this build
+# config has been provided as a placeholder (and reminded) to add them in the
+# future.
+---
+language: ruby
+sudo: false
+rvm: 2.1.9
+install: gem list -i ruby_cowsay -q > /dev/null || gem install ruby_cowsay
+script:  ruby  -r ruby_cowsay -e "puts Cow.new({ :cow => ['cow','vader','skeleton','ren','owl','www','turtle'].sample }).say('There are no tests yet, but there probably should be.', 'think')"

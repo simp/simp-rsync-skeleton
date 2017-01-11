@@ -1,13 +1,30 @@
-%global selinux_policyver %(%{__sed} -e %'s,.*selinux-policy-\\([^/]*\\)/.*,\\1,' %/usr/share/selinux/devel/policyhelp 2>/dev/null || echo 0.0.0)
+# The following two items are specifically set to the *earliest* version of
+# these packages present in these major releases.
+#
+# This is required since SELinux policies are forward compatible during a major
+# release but not necessarily backwards compatible and we want to ensure
+# maximum package compatibility.
+%if 0%{?rhel} == 6
+%global policycoreutils_version 2.0.83
+%global selinux_policy_version 3.7.19
+%endif
+%if 0%{?rhel} == 7
+%global policycoreutils_version 2.2.5
+%global selinux_policy_version 3.12.1
+%endif
+
+# For future reference
+# global selinux_policy_version %(%{__sed} -e %'s,.*selinux-policy-\\([^/]*\\)/.*,\\1,' %/usr/share/selinux/devel/policyhelp 2>/dev/null || echo 0.0.0)
+
 %global selinux_variants targeted
 %global _binaries_in_noarch_packages_terminate_build 0
-%global rsync_dir /var/simp/rsync
+%global rsync_dir /var/simp/environments/simp/rsync
 %global current_date %(date)
 
 Summary: SIMP rsync repository
 Name: simp-rsync
-Version: 5.1.0
-Release: 3%{?dist}
+Version: 6.0.0
+Release: 0%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -19,16 +36,23 @@ Requires: policycoreutils
 Requires(post): coreutils
 Requires(post): libsemanage
 Requires(post): policycoreutils
-Requires(post): selinux-policy >= %{selinux_policyver}
-Requires(post): selinux-policy-targeted >= %{selinux_policyver}
+Requires(post): selinux-policy >= %{selinux_policy_version}
+Requires(post): selinux-policy-targeted >= %{selinux_policy_version}
 Requires(postun): policycoreutils
-Provides: simp_rsync_filestore >= 1.0.0
+Provides: simp_rsync_filestore = %{version}
 Obsoletes: simp_rsync_filestore >= 1.0.0
 Buildarch: noarch
-BuildRequires: selinux-policy-devel
-BuildRequires: selinux-policy-targeted
+BuildRequires: policycoreutils == %{policycoreutils_version}
+BuildRequires: policycoreutils-python == %{policycoreutils_version}
+BuildRequires: selinux-policy == %{selinux_policy_version}
+BuildRequires: selinux-policy-devel == %{selinux_policy_version}
+%if 0%{?rhel} == 7
+BuildRequires: policycoreutils-devel == %{policycoreutils_version}
+# Need this in later releases
+# BuildRequires: selinux-policy-targeted == %{selinux_policy_version}
+%endif
 
-Prefix: %{rsync_dir}/RedHat/7
+Prefix: %{rsync_dir}
 
 %package clamav
 Summary: SIMP ClamAV Rsync Repository
@@ -66,7 +90,8 @@ tar --exclude-vcs \
   --exclude=CONTRIBUTING.md \
   --exclude=LICENSE \
   --exclude=README.md \
-  -cf - . | (cd %{buildroot}/%{rsync_dir} && tar -xBf -)
+  --exclude=.travis.yml \
+  -cf - . | (cd %{buildroot}/var/simp && tar -xBf -)
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
@@ -75,50 +100,41 @@ tar --exclude-vcs \
 %defattr(0640,root,root,0750)
 %doc CONTRIBUTING.md LICENSE README.md
 %{_datadir}/selinux/*/%{name}.pp
-%{rsync_dir}/.rsync.facl
-%config(noreplace) %{prefix}/apache
-%config(noreplace) %{prefix}/bind_dns
-%config(noreplace) %{prefix}/default
-%config(noreplace) %{prefix}/dhcpd
-%config(noreplace) %{prefix}/freeradius
-%config(noreplace) %{prefix}/jenkins_plugins
-%config(noreplace) %{prefix}/mcafee
-%config(noreplace) %{prefix}/snmp
-%config(noreplace) %{prefix}/tftpboot
+%config %{rsync_dir}/.rsync.facl
+%config(noreplace) %{rsync_dir}
 
 %files clamav
 %defattr(0640,root,root,0750)
-%config(noreplace) %{prefix}/clamav
+%config(noreplace) %{rsync_dir}/Global/clamav
 
 %pre
 #!/bin/sh
 # Remove the directories that we're going to replace with symlinks.
-if [ -d %{prefix}/tftpboot/linux-install ]; then
-  cd %{prefix}/tftpboot/linux-install;
-  rm -rf rhel{5,6,7}_i386;
-  rm -rf rhel{5,6,7}_x86_64;
-  cd - > /dev/null
+if [ -d %{rsync_dir} ]; then
+  for dir in `find %{rsync_dir} -type d -name 'linux-install'`; do
+  (
+    cd $dir
+    rm -rf rhel{5,6,7}_i386
+    rm -rf rhel{5,6,7}_x86_64
+  )
+  done
 fi
 
 # Make sure upgrades work properly!
 if [ $1 == 2 ]; then
-  if [ ! -d "%{prefix}" ]; then
-    mkdir -p "%{prefix}";
-    cd "%{rsync_dir}";
-    mv * "%{prefix}";
-    cd - > /dev/null
-  fi
+  if [ -d %{rsync_dir} ]; then
+    for dir in `find %{rsync_dir} -type d -name 'bind_dns'`; do
+    (
+      cd $dir/..
 
-  cd %{prefix};
-  if [ -d domains ]; then
-    mv domains bind_dns;
-  fi
+      tmpdir=`ls bind_dns | grep -ve "\(your.domain\|default\)" | head -1`
 
-  tmpdir=`ls bind_dns | grep -ve "\(your.domain\|default\)" | head -1`
-  if [ -n "$tmpdir" ] && [ ! -d bind_dns/default ]; then
-    ln -s $tmpdir bind_dns/default
+      if [ -n "$tmpdir" ] && [ ! -d 'bind_dns/default' ]; then
+        ln -s $tmpdir bind_dns/default
+      fi
+    )
+    done
   fi
-  cd - > /dev/null
 fi
 
 %pre clamav
@@ -131,39 +147,25 @@ fi
 cd %{rsync_dir};
 
 # Create a CentOS link if a directory or link doesn't exist
-if [ ! -d "CentOS" ] && [ ! -h "CentOS" ]; then
-  ln -sf RedHat CentOS;
-fi
+for dir in `find . -type d -name 'RedHat'`; do
+  (
+    cd $dir/..
 
-# Set the FACLs on the files so that we don't make a Windows box.
-if [ -f .rsync.facl.rpmnew ]; then
-  /bin/mv .rsync.facl .rsync.facl.rpmsave
-  /bin/mv .rsync.facl.rpmnew .rsync.facl
-fi
+    if [ ! -d "CentOS" ] && [ ! -h "CentOS" ]; then
+      ln -sf RedHat CentOS;
+    fi
+  )
+done
+
+find . -type f -name "*.rpmnew" -delete
+
+# Set the FACLs on the files so that we don't make a Windows box
 setfacl --restore=.rsync.facl 2>/dev/null;
-
-find . -type f -name "*.rpmnew" -exec rm -f {} \;
 
 /usr/sbin/semodule -n -i %{_datadir}/selinux/packages/%{name}.pp
 if /usr/sbin/selinuxenabled; then
   /usr/sbin/load_policy
   /sbin/fixfiles -R %{name} restore || :
-fi
-
-# Cleanup from legacy issues
-if [ -f %{prefix}/default/global_etc/pam.d/su ]; then
-  /bin/rm -f %{prefix}/default/global_etc/pam.d/su;
-fi
-
-if [ -f %{prefix}/default/cron.daily/logrotate ]; then
-  /bin/rm -f %{prefix}/default/cron.daily/logrotate;
-fi
-
-# Clean up the old checkdev.cron script since it is potentially
-# damaging to network health.
-
-if [ -f %{prefix}/default/global_etc/cron.weekly/checkdev.cron ]; then
-  rm %{prefix}/default/global_etc/cron.weekly/checkdev.cron;
 fi
 
 %post clamav
@@ -175,8 +177,8 @@ restorecon -R %{prefix}
 # Only do this on uninstall
 if [ $1 -eq 0 ]; then
   # Clean up the CentOS link if present
-  if [ -h "%{rsync_dir}/CentOS" ]; then
-    unlink "%{rsync_dir}/CentOS";
+  if [ -d %{rsync_dir} ]; then
+    find %{rsync_dir} -type l -name 'CentOS' -delete
   fi
 fi
 
@@ -190,20 +192,11 @@ if [ $1 -eq 0 ] ; then
   fi
 fi
 
-%posttrans
-#!/bin/sh
-# This should be removed at some point. It works around older package issues
-# with removing the link incorrectly.
-if [ $1 -eq 0 ]; then
-  cd %{rsync_dir};
-
-  # Create a CentOS link if a directory or link doesn't exist
-  if [ ! -d "CentOS" ] && [ ! -h "CentOS" ]; then
-    ln -sf RedHat CentOS;
-  fi
-fi
-
 %changelog
+* Wed Jan 11 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.0-0
+- Now works with multiple environments
+- Removed all legacy 'fix' code
+
 * Wed Nov 25 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.1.0-3
 - Fixed 'preun' bug that resulted in the 'CentOS' symlink being removed upon
   package upgrade.

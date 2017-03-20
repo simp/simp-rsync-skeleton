@@ -44,3 +44,28 @@ baseurl=http://vault.centos.org/6.0/os/x86_64
 gpgkey=file:///usr/share/distribution-gpg-keys/centos/RPM-GPG-KEY-CentOS-6
 gpgcheck=1
 ```
+
+### Usage
+
+To get full functionality out of the SIMP modules, particularly, the `simp`
+module itself, you need to perform the following operations:
+
+**NOTE:** If you're using the RPM, it does all of this for you and is the
+recommended method for installing these files.
+
+#### Copy the Repository into Place
+
+  1. ``mkdir -p /var/simp/environments/simp``
+  2. Copy the ``environments/simp/rsync`` directory from this repository into ``/var/simp/environments/simp``
+  3. ``cd /var/simp/environments/simp/rsync``
+  4. ``setfacl --restore=.rsync.facl 2>/dev/null``
+
+#### Restore the SELinux Contexts
+
+  1. ``cd`` into the cloned repository
+  2. ``cd build/selinux``
+  3. ``make -f /usr/share/selinux/devel/Makefile``
+  4. ``cp *.pp /usr/share/selinux/packages``
+  5. ``/usr/sbin/semodule -n -i /usr/share/selinux/packages/simp-rsync.pp``
+  6. ``/usr/sbin/load_policy``
+  7. ``/sbin/fixfiles -R simp-rsync restore

@@ -23,7 +23,7 @@
 
 Summary: SIMP rsync repository
 Name: simp-rsync
-Version: 6.0.0
+Version: 6.0.1
 Release: 0%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
@@ -193,6 +193,10 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %changelog
+* Mon Mar 20 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.1-0
+- Updated the README that is delivered with the SIMP rsync environments to talk
+  a bit about the shares structure and to encourage users to read the HOWTO
+
 * Wed Jan 11 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.0-0
 - Now works with multiple environments
 - Removed all legacy 'fix' code

@@ -5,3 +5,19 @@ Globals => Any shares that are not bound by OS specific issues
 <OperatingSystem>/<MajorRelease> => Shares that are specific to the OS and release
 
 No other directory structure is supported at this time
+
+## Updating The Shares
+
+Care must be taken with updating the rsync shares in a SIMP system.
+
+In particular, you need to ensure that any directory where rsync will be
+sharing content contains a `.shares` file.
+
+This structure is used by the `simp_rsync_environments` fact to provide the
+Puppet server with an understanding of what has the potential of being shared
+out on the sysetm and where it is located. This means that you can easily move
+your rsync shares to other servers and that they are not bound to the Puppet
+server.
+
+See the HOWTO on working with Rsync shares in the main SIMP documentation for a
+full description and examples.

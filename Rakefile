@@ -14,8 +14,15 @@ class RsyncPkg < Simp::Rake::Pkg
       EOM
       task :clamsync do
         mkdir(clambase) unless File.exist?(clambase)
-
-        verbose(true) { sh %{freshclam --config-file=build/freshclam.conf} }
+        puts '================================================================================'
+        if ENV['SIMP_BUILD_freshclam'] != 'no'
+          puts '#### Beginning freshclam update (because SIMP_BUILD_freshclam != no)'
+          verbose(true) { sh %{freshclam --config-file=build/freshclam.conf} }
+        else
+          puts '#### Skipping freshclam update (because SIMP_BUILD_freshclam = no)'
+          %w[bytecode.cld bytecode.cvd daily.cld daily.cvd main.cld main.cvd].each{|file| %x{touch #{clambase}/#{file}}}
+        end
+        puts '================================================================================'
         rm("#{clambase}/mirrors.dat") if File.exist?("#{clambase}/mirrors.dat")
       end
     end

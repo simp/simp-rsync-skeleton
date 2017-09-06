@@ -56,8 +56,6 @@ class RsyncPkg < Simp::Rake::Pkg
         file_diff = present_files - facl_files
 
         unless file_diff.empty?
-          require 'pry'
-          binding.pry
           raise(Exception,"Error: The following files do not have FACL entries:\n  #{file_diff.sort.uniq.join("\n  ")}")
         end
 
@@ -104,11 +102,12 @@ class RsyncPkg < Simp::Rake::Pkg
   end
 
   def define
-    define_clamsync
+    #define_clamsync
     define_check_facl
     super
     # Add on the needed prereqs
-    Rake::Task['pkg:tar'].enhance([:clamsync, :check_facl])
+    #Rake::Task['pkg:tar'].enhance([:clamsync, :check_facl])
+    Rake::Task['pkg:tar'].enhance([:check_facl])
   end
 end
 

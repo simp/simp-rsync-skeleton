@@ -4,13 +4,18 @@
 # This is required since SELinux policies are forward compatible during a major
 # release but not necessarily backwards compatible and we want to ensure
 # maximum package compatibility.
-%if 0%{?rhel} == 6
-%global policycoreutils_version 2.0.83
-%global selinux_policy_version 3.7.19
-%endif
-%if 0%{?rhel} == 7
-%global policycoreutils_version 2.2.5
-%global selinux_policy_version 3.12.1
+%if 0%{?rhel} == 6 || 0%{?rhel} == 7
+  %if 0%{?rhel} == 6
+    %global policycoreutils_version 2.0.83
+    %global selinux_policy_version 3.7.19
+  %endif
+  %if 0%{?rhel} == 7
+    %global policycoreutils_version 2.2.5
+    %global selinux_policy_version 3.12.1
+  %endif
+%else
+  %global policycoreutils_version %{nil}
+  %global selinux_policy_version %{nil}
 %endif
 
 # For future reference
@@ -23,7 +28,7 @@
 
 Summary: SIMP rsync repository
 Name: simp-rsync
-Version: 6.0.2
+Version: 6.1.0
 Release: 0%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
@@ -36,35 +41,43 @@ Requires: policycoreutils
 Requires(post): coreutils
 Requires(post): libsemanage
 Requires(post): policycoreutils
+
+%if 0%{?selinux_policy_version}
 Requires(post): selinux-policy >= %{selinux_policy_version}
 Requires(post): selinux-policy-targeted >= %{selinux_policy_version}
+%else
+Requires(post): selinux-policy
+Requires(post): selinux-policy-targeted
+%endif
+
 Requires(postun): policycoreutils
 Provides: simp_rsync_filestore = %{version}
 Obsoletes: simp_rsync_filestore >= 1.0.0
 Buildarch: noarch
+
+%if 0%{?selinux_policy_version}
 BuildRequires: policycoreutils == %{policycoreutils_version}
 BuildRequires: policycoreutils-python == %{policycoreutils_version}
 BuildRequires: selinux-policy == %{selinux_policy_version}
 BuildRequires: selinux-policy-devel == %{selinux_policy_version}
-%if 0%{?rhel} == 7
+  %if 0%{?rhel} == 7
 BuildRequires: policycoreutils-devel == %{policycoreutils_version}
-# Need this in later releases
-# BuildRequires: selinux-policy-targeted == %{selinux_policy_version}
+  %endif
+BuildRequires: policycoreutils
+BuildRequires: policycoreutils-python
+BuildRequires: selinux-policy
+BuildRequires: selinux-policy-devel
+  %if 0%{?rhel} == 7
+BuildRequires: policycoreutils-devel
+BuildRequires: selinux-policy-targeted
+  %endif
 %endif
 
 Prefix: %{rsync_dir}
 
-%package clamav
-Summary: SIMP ClamAV Rsync Repository
-License: GPLv2
-Requires: simp-rsync >= %{version}-%{release}
-
 %description
 Contains SIMP items that are likely to be manipulated by the user and/or too
 large to transfer via Puppet.
-
-%description clamav
-Contains a copy of the latest ClamAV DAT files as of %{current_date}
 
 %prep
 %setup -q
@@ -82,16 +95,7 @@ install -p -m 644 -D build/selinux/%{name}.pp %{buildroot}/%{_datadir}/selinux/p
 mkdir -p %{buildroot}/%{prefix}
 
 # Install all items but ignore the build components.
-tar --exclude-vcs \
-  --exclude=.selinux \
-  --exclude=Rakefile \
-  --exclude=build \
-  --exclude=dist \
-  --exclude=CONTRIBUTING.md \
-  --exclude=LICENSE \
-  --exclude=README.md \
-  --exclude=.travis.yml \
-  -cf - . | (cd %{buildroot}/var/simp && tar -xBf -)
+tar --exclude-vcs -cf - environments | (cd %{buildroot}/var/simp && tar -xBf -)
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
@@ -102,10 +106,6 @@ tar --exclude-vcs \
 %{_datadir}/selinux/*/%{name}.pp
 %config %{rsync_dir}/.rsync.facl
 %config(noreplace) %{rsync_dir}
-
-%files clamav
-%defattr(0640,root,root,0750)
-%config(noreplace) %{rsync_dir}/Global/clamav
 
 %pre
 #!/bin/sh
@@ -137,9 +137,6 @@ if [ $1 == 2 ]; then
   fi
 fi
 
-%pre clamav
-#!/bin/sh
-
 %post
 #!/bin/sh
 # Post installation stuff
@@ -168,11 +165,6 @@ if /usr/sbin/selinuxenabled; then
   /sbin/fixfiles -R %{name} restore || :
 fi
 
-%post clamav
-cd %{rsync_dir}
-setfacl --restore=.rsync.facl 2>/dev/null;
-restorecon -R %{prefix}
-
 %preun
 # Only do this on uninstall
 if [ $1 -eq 0 ]; then
@@ -193,6 +185,10 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %changelog
+* Wed Sep 06 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.1.0-0
+- Removed the rsync-clamav RPM from the build since it has proven to not be
+  useful to most users.
+
 * Fri Aug 18 2017 Jeanne Greulich <jeanne.greulich@onyxpint.com> - 6.0.2-0
 - Added selinux context for the snmp rsync directories.
 

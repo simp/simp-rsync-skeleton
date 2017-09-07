@@ -9,6 +9,7 @@
     %global policycoreutils_version 2.0.83
     %global selinux_policy_version 3.7.19
   %endif
+
   %if 0%{?rhel} == 7
     %global policycoreutils_version 2.2.5
     %global selinux_policy_version 3.12.1
@@ -42,7 +43,7 @@ Requires(post): coreutils
 Requires(post): libsemanage
 Requires(post): policycoreutils
 
-%if 0%{?selinux_policy_version}
+%if 0%{?selinux_policy_version:1}
 Requires(post): selinux-policy >= %{selinux_policy_version}
 Requires(post): selinux-policy-targeted >= %{selinux_policy_version}
 %else
@@ -55,7 +56,7 @@ Provides: simp_rsync_filestore = %{version}
 Obsoletes: simp_rsync_filestore >= 1.0.0
 Buildarch: noarch
 
-%if 0%{?selinux_policy_version}
+%if 0%{?selinux_policy_version:1}
 BuildRequires: policycoreutils == %{policycoreutils_version}
 BuildRequires: policycoreutils-python == %{policycoreutils_version}
 BuildRequires: selinux-policy == %{selinux_policy_version}

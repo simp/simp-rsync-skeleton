@@ -4,19 +4,21 @@
 # This is required since SELinux policies are forward compatible during a major
 # release but not necessarily backwards compatible and we want to ensure
 # maximum package compatibility.
-%if 0%{?rhel} == 6 || 0%{?rhel} == 7
-  %if 0%{?rhel} == 6
-    %global policycoreutils_version 2.0.83
-    %global selinux_policy_version 3.7.19
-  %endif
+%define ignore_selinux_reqs %{getenv:RSYNC_NO_SELINUX_DEPS}
 
-  %if 0%{?rhel} == 7
-    %global policycoreutils_version 2.2.5
-    %global selinux_policy_version 3.12.1
+# Only run the following if the environment variable is *not* defined
+%if "%{ignore_selinux_reqs}" == ""
+  %if 0%{?rhel} == 6 || 0%{?rhel} == 7
+    %if 0%{?rhel} == 6
+      %global policycoreutils_version 2.0.83
+      %global selinux_policy_version 3.7.19
+    %endif
+
+    %if 0%{?rhel} == 7
+      %global policycoreutils_version 2.2.5
+      %global selinux_policy_version 3.12.1
+    %endif
   %endif
-%else
-  %global policycoreutils_version %{nil}
-  %global selinux_policy_version %{nil}
 %endif
 
 # For future reference

@@ -5,61 +5,19 @@ user::rwx
 group::r-x
 other::---
 
-# file: Global/mcafee
+# file: Global/clamav
 # owner: root
 # group: root
 user::rwx
 group::r-x
 other::r-x
 
-# file: Global/clamav
-# owner: 409
-# group: 409
+# file: Global/mcafee
+# owner: root
+# group: root
 user::rwx
-group::rwx
+group::r-x
 other::r-x
-
-# file: Global/clamav/daily.cvd
-# owner: 409
-# group: 409
-user::rw-
-group::rw-
-other::r--
-
-# file: Global/clamav/daily.cld
-# owner: 409
-# group: 409
-user::rw-
-group::rw-
-other::r--
-
-# file: Global/clamav/main.cvd
-# owner: 409
-# group: 409
-user::rw-
-group::rw-
-other::r--
-
-# file: Global/clamav/main.cld
-# owner: 409
-# group: 409
-user::rw-
-group::rw-
-other::r--
-
-# file: Global/clamav/bytecode.cvd
-# owner: 409
-# group: 409
-user::rw-
-group::rw-
-other::r--
-
-# file: Global/clamav/bytecode.cld
-# owner: 409
-# group: 409
-user::rw-
-group::rw-
-other::r--
 
 # file: Global/jenkins_plugins
 # owner: 419

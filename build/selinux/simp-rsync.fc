@@ -4,7 +4,7 @@
 /var/simp/environments/simp/rsync/RedHat/Global/freeradius(/.*)?                                                     system_u:object_r:radiusd_etc_t:s0
 /var/simp/environments/simp/rsync/RedHat/Global/snmp/mibs(/.*)?                                                     system_u:object_r:snmpd_var_lib_t:s0
 /var/simp/environments/simp/rsync/RedHat/Global/snmp/dlmod(/.*)?                                                     system_u:object_r:snmpd_exec_t:s0
-/var/simp/environments/simp/rsync/Global/clamav(/.*)?                                                         system_u:object_r:antivirus_db_t:s0
+#/var/simp/environments/simp/rsync/Global/clamav(/.*)?                                                         system_u:object_r:antivirus_db_t:s0
 /var/simp/environments/simp/rsync/Global/mcafee(/.*)?                                                         system_u:object_r:antivirus_db_t:s0
 /var/simp/environments/simp/rsync/.*/.*/bind_dns/.*/named                                                     system_u:object_r:named_conf_t:s0
 /var/simp/environments/simp/rsync/.*/.*/bind_dns/.*/named/etc                                                 system_u:object_r:etc_t:s0

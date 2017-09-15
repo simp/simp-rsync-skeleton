@@ -20,7 +20,7 @@ gem_sources.each { |gem_source| source gem_source }
 gem 'bundler'
 gem 'puppet', ENV.fetch('PUPPET_VERSION',  '~>4')
 gem 'rake'
-gem 'simp-rake-helpers', ENV.fetch('SIMP_RAKE_HELPERS_VERSION', '~> 5.0')
+gem 'simp-rake-helpers', ENV.fetch('SIMP_RAKE_HELPERS_VERSION', ['>= 4.0.0', '< 6.0.0'])
 
 # nice-to-have gems (for debugging)
 group :development do

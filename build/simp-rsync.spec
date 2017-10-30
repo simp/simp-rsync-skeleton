@@ -11,6 +11,7 @@ Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
+Requires: simp-environment
 Requires: acl
 
 Provides: simp_rsync_filestore = %{version}

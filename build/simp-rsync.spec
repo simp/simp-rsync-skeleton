@@ -1,80 +1,22 @@
-# The following two items are specifically set to the *earliest* version of
-# these packages present in these major releases.
-#
-# This is required since SELinux policies are forward compatible during a major
-# release but not necessarily backwards compatible and we want to ensure
-# maximum package compatibility.
-%define ignore_selinux_reqs %{getenv:RSYNC_NO_SELINUX_DEPS}
-
-# Only run the following if the environment variable is *not* defined
-%if "%{ignore_selinux_reqs}" == ""
-  %if 0%{?rhel} == 6 || 0%{?rhel} == 7
-    %if 0%{?rhel} == 6
-      %global policycoreutils_version 2.0.83
-      %global selinux_policy_version 3.7.19
-    %endif
-
-    %if 0%{?rhel} == 7
-      %global policycoreutils_version 2.2.5
-      %global selinux_policy_version 3.12.1
-    %endif
-  %endif
-%endif
-
-# For future reference
-# global selinux_policy_version %(%{__sed} -e %'s,.*selinux-policy-\\([^/]*\\)/.*,\\1,' %/usr/share/selinux/devel/policyhelp 2>/dev/null || echo 0.0.0)
-
-%global selinux_variants targeted
 %global _binaries_in_noarch_packages_terminate_build 0
 %global rsync_dir /var/simp/environments/simp/rsync
 %global current_date %(date)
 
 Summary: SIMP rsync repository
 Name: simp-rsync
-Version: 6.1.0
+Version: 6.1.1
 Release: 0%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
+Requires: simp-environment >= 6.2.5
 Requires: acl
-Requires: libselinux-utils
-Requires: policycoreutils
-Requires(post): coreutils
-Requires(post): libsemanage
-Requires(post): policycoreutils
 
-%if 0%{?selinux_policy_version:1}
-Requires(post): selinux-policy >= %{selinux_policy_version}
-Requires(post): selinux-policy-targeted >= %{selinux_policy_version}
-%else
-Requires(post): selinux-policy
-Requires(post): selinux-policy-targeted
-%endif
-
-Requires(postun): policycoreutils
 Provides: simp_rsync_filestore = %{version}
 Obsoletes: simp_rsync_filestore >= 1.0.0
 Buildarch: noarch
-
-%if 0%{?selinux_policy_version:1}
-BuildRequires: policycoreutils == %{policycoreutils_version}
-BuildRequires: policycoreutils-python == %{policycoreutils_version}
-BuildRequires: selinux-policy == %{selinux_policy_version}
-BuildRequires: selinux-policy-devel == %{selinux_policy_version}
-  %if 0%{?rhel} == 7
-BuildRequires: policycoreutils-devel == %{policycoreutils_version}
-  %endif
-BuildRequires: policycoreutils
-BuildRequires: policycoreutils-python
-BuildRequires: selinux-policy
-BuildRequires: selinux-policy-devel
-  %if 0%{?rhel} == 7
-BuildRequires: policycoreutils-devel
-BuildRequires: selinux-policy-targeted
-  %endif
-%endif
 
 Prefix: %{rsync_dir}
 
@@ -86,14 +28,9 @@ large to transfer via Puppet.
 %setup -q
 
 %build
-cd build/selinux
-make -f %{_datadir}/selinux/devel/Makefile
-cd - > /dev/null
 
 %install
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
-
-install -p -m 644 -D build/selinux/%{name}.pp %{buildroot}/%{_datadir}/selinux/packages/%{name}.pp
 
 mkdir -p %{buildroot}/%{prefix}
 
@@ -106,7 +43,6 @@ tar --exclude-vcs -cf - environments | (cd %{buildroot}/var/simp && tar -xBf -)
 %files
 %defattr(0640,root,root,0750)
 %doc CONTRIBUTING.md LICENSE README.md
-%{_datadir}/selinux/*/%{name}.pp
 %config %{rsync_dir}/.rsync.facl
 %config(noreplace) %{rsync_dir}
 
@@ -162,12 +98,6 @@ find . -type f -name "*.rpmnew" -delete
 # Set the FACLs on the files so that we don't make a Windows box
 setfacl --restore=.rsync.facl 2>/dev/null;
 
-/usr/sbin/semodule -n -i %{_datadir}/selinux/packages/%{name}.pp
-if /usr/sbin/selinuxenabled; then
-  /usr/sbin/load_policy
-  /sbin/fixfiles -R %{name} restore || :
-fi
-
 %preun
 # Only do this on uninstall
 if [ $1 -eq 0 ]; then
@@ -179,15 +109,16 @@ fi
 
 %postun
 # Post uninstall stuff
-if [ $1 -eq 0 ] ; then
-  /usr/sbin/semodule -n -r %{name}
-  if /usr/sbin/selinuxenabled; then
-    /usr/sbin/load_policy
-    /sbin/fixfiles -R %{name} restore || :
-  fi
-fi
-
 %changelog
+* Thu Oct 26 2017 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.2.0-0
+- selinux policy in simp-environment was changing settings on rsync files not in the
+  simp environment.  If DNS and DHCP were running in an environment other
+  then simp, relabeling the filesystem would change the selinux context to default
+  for /var/simp and cause these services to fail if selinux was in enforcing mode.
+- The selinux policy and the logic to set it up were moved to simp-environment module
+  so the selinux policy for /var/simp directory would be in one spot.
+- Simp-rsync now requires the simp-environment
+
 * Wed Sep 06 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.1.0-0
 - Removed the rsync-clamav RPM from the build since it has proven to not be
   useful to most users.

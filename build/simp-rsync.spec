@@ -112,7 +112,10 @@ fi
 
 %changelog
 * Thu Oct 26 2017 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.2.0-0
-- moves selinux policy to simp-environment module.
+- selinux policy in environment was changing settings on rsync files not in the
+  simp environment.
+- moved selinux policy to simp-environment module and had simp rsync require this module
+  so the selinux policy for /var/simp directory would be in one spot.
 
 * Wed Sep 06 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.1.0-0
 - Removed the rsync-clamav RPM from the build since it has proven to not be

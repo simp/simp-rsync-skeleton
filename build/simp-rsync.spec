@@ -4,7 +4,7 @@
 
 Summary: SIMP rsync repository
 Name: simp-rsync
-Version: 6.1.1
+Version: 6.2.0
 Release: 0%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
@@ -111,10 +111,11 @@ fi
 # Post uninstall stuff
 %changelog
 * Thu Oct 26 2017 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.2.0-0
-- selinux policy in simp-environment was changing settings on rsync files not in the
-  simp environment.  If DNS and DHCP were running in an environment other
-  then simp, relabeling the filesystem would change the selinux context to default
-  for /var/simp and cause these services to fail if selinux was in enforcing mode.
+- The selinux policy in simp-environment was changing settings on rsync
+  files not in the simp environment.  If DNS and DHCP were running in an
+  environment other then simp, relabeling the filesystem would change the
+  selinux context to default context for /var/simp. This, in turn, caused
+  these services to fail if selinux was in enforcing mode.
 - The selinux policy and the logic to set it up were moved to simp-environment module
   so the selinux policy for /var/simp directory would be in one spot.
 - Simp-rsync now requires the simp-environment

@@ -4,7 +4,7 @@
 
 Summary: SIMP rsync repository
 Name: simp-rsync
-Version: 6.2.0
+Version: 6.2.1
 Release: 0%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
@@ -110,6 +110,10 @@ fi
 %postun
 # Post uninstall stuff
 %changelog
+* Thu Apr 26 2018 Liz Nemsick <lnemsick.simp@gmail.com> - 6.2.1-0
+- Added logic in dhcpd.conf to select the appropriate PXEboot file
+  based on the boot type (BIOS or UEFI).
+
 * Thu Oct 26 2017 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.2.0-0
 - The selinux policy in simp-environment was changing settings on rsync
   files not in the simp environment.  If DNS and DHCP were running in an

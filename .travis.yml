@@ -1,9 +1,44 @@
-# Note: There aren't any tests for simp-rsync right now.  However, this build
-# config has been provided as a placeholder (and reminded) to add them in the
-# future.
 ---
 language: ruby
+cache: bundler
 sudo: false
-rvm: 2.1.9
-install: gem list -i ruby_cowsay -q > /dev/null || gem install ruby_cowsay
-script:  ruby  -r ruby_cowsay -e "puts Cow.new({ :cow => ['cow','vader','skeleton','ren','owl','www','turtle'].sample }).say('There are no tests yet, but there probably should be.', 'think')"
+
+bundler_args: --without development system_tests --path .vendor
+
+notifications:
+  email: false
+
+addons:
+  apt:
+    packages:
+      - rpm
+
+before_install:
+  - rm -f Gemfile.lock
+
+jobs:
+  allow_failures:
+    - env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 5.0"
+
+  include:
+    - stage: check
+      rvm: 2.4.1
+      script:
+        - bundle exec rake pkg:compare_latest_tag
+        - bundle exec rake pkg:create_tag_changelog
+
+    - stage: deploy
+      rvm: 2.4.1
+      script:
+        - true
+      before_deploy:
+        - "export SPECFILE_VERSION=`rpm -q --specfile build/*.spec --queryformat '%{VERSION}'`"
+        - '[[ $TRAVIS_TAG =~ ^${SPECFILE_VERSION}$ ]]'
+      deploy:
+        - provider: releases
+          api_key:
+              secure: "INSERTVALIDKEYHEREPLEASE"
+          skip_cleanup: true
+          on:
+            tags: true
+            condition: '($SKIP_PUBLISH != true)'

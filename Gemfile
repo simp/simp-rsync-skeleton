@@ -18,13 +18,15 @@ gem_sources.each { |gem_source| source gem_source }
 
 # mandatory gems
 gem 'bundler'
-gem 'puppet', ENV.fetch('PUPPET_VERSION',  '~>4')
 gem 'rake'
-gem 'simp-rake-helpers', ENV.fetch('SIMP_RAKE_HELPERS_VERSION', ['>= 4.0.0', '< 6.0.0'])
+gem 'simp-rake-helpers', ENV.fetch('SIMP_RAKE_HELPERS_VERSION', ['>= 5.2', '< 6.0'])
 
-# nice-to-have gems (for debugging)
-group :development do
-  # enhanced REPL + debugging environment
-  gem 'pry'
-  gem 'pry-doc'
+# although we have no tests, these are pulled in by simp-rake-helpers
+# so need to make sure have correct simp-beaker-helpers to deal
+# with Ruby 2.1.9 gem issues
+group :system_tests do
+  gem 'beaker'
+  gem 'beaker-rspec'
+  gem 'simp-beaker-helpers', ENV.fetch('SIMP_BEAKER_HELPERS_VERSION', ['>= 1.10.8', '< 2.0'])
 end
+

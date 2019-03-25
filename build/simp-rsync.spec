@@ -41,7 +41,7 @@ tar --exclude-vcs -cf - environments | (cd %{buildroot}/var/simp && tar -xBf -)
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 
 %files
-%defattr(0640,root,root,0750)
+%defattr(0640,root,root,0751)
 %doc CONTRIBUTING.md LICENSE README.md
 %config %{rsync_dir}/.rsync.facl
 %config(noreplace) %{rsync_dir}

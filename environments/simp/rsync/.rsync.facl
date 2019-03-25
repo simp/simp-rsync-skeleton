@@ -3,11 +3,11 @@
 # group: root
 user::rwx
 group::r-x
-other::---
+other::--x
 
 # file: Global/clamav
-# owner: root
-# group: root
+# owner: clamupdate
+# group: clamupdate
 user::rwx
 group::r-x
 other::r-x

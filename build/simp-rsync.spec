@@ -4,7 +4,7 @@
 
 Summary: SIMP rsync repository
 Name: simp-rsync
-Version: 6.2.1
+Version: 6.2.2
 Release: 0%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
@@ -110,6 +110,10 @@ fi
 %postun
 # Post uninstall stuff
 %changelog
+* Mon Mar 25 2019 Jim Anderson <thesemicolons@protonmail.com> - 6.2.2-0
+- Updated permissions on rsync and rsync/Global.
+- Changed ownership of rsync/Global/clamav.
+
 * Thu Apr 26 2018 Liz Nemsick <lnemsick.simp@gmail.com> - 6.2.1-0
 - Added logic in dhcpd.conf to select the appropriate PXEboot file
   based on the boot type (BIOS or UEFI).

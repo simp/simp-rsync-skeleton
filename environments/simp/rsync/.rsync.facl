@@ -6,8 +6,8 @@ group::r-x
 other::--x
 
 # file: Global/clamav
-# owner: clamupdate
-# group: clamupdate
+# owner: 408
+# group: 408
 user::rwx
 group::r-x
 other::r-x

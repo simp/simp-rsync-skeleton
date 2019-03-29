@@ -21,6 +21,7 @@ jobs:
     - stage: check
       rvm: 2.4.4
       script:
+        - 'echo "%dist .travisci" >> $HOME/.rpmmacros'
         - bundle exec rake pkg:compare_latest_tag
         - bundle exec rake pkg:create_tag_changelog
         - bundle exec rake pkg:rpm

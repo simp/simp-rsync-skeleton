@@ -4,7 +4,7 @@ require 'simp/rake'
 
 class RsyncPkg < Simp::Rake::Pkg
   def define_clamsync
-    clambase = 'environments/simp/rsync/Global/clamav'
+    clambase = 'rsync/Global/clamav'
 
     namespace :pkg do
       desc <<-EOM
@@ -34,7 +34,7 @@ class RsyncPkg < Simp::Rake::Pkg
       # First, check to make sure that we actually have a facl entry for
       # everything in our tree.
 
-      Dir.chdir('environments/simp/rsync') do
+      Dir.chdir('rsync') do
         facl_files = File.read('.rsync.facl').split("\n").collect{|x| if x =~ /^#\s+file:\s+(.*)\s*$/ then x = $1 end }.compact
         present_files = []
         Find.find('.') do |path|
@@ -112,6 +112,6 @@ class RsyncPkg < Simp::Rake::Pkg
 end
 
 RsyncPkg.new(File.dirname(__FILE__)) do |t|
-  t.ignore_changes_list << "#{t.pkg_name}/environments/simp/rsync/Global/clamav"
-  ::CLOBBER.include("#{t.base_dir}/environments/simp/rsync/Global/clamav/*")
+  t.ignore_changes_list << "#{t.pkg_name}/rsync/Global/clamav"
+  ::CLOBBER.include("#{t.base_dir}/rsync/Global/clamav/*")
 end

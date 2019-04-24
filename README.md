@@ -17,6 +17,8 @@ When updating this repository, you **must** ensure that you update the
 
 ### Notes on Building
 
+This rpm requires simp-environment-skeleton.  That contains the selinux contexts for
+simp, which include the context for the rsync directories.
 To build the RPMs for this repository, you will need to enable the *earliest*
 EL6 and EL7 repositories for Mock so that it can use an SELinux Development
 stack that is guaranteed to work.
@@ -53,19 +55,26 @@ module itself, you need to perform the following operations:
 **NOTE:** If you're using the RPM, it does all of this for you and is the
 recommended method for installing these files.
 
-#### Copy the Repository into Place
+#### Copy the Repository to the skeleton directory
 
-  1. ``mkdir -p /var/simp/environments/simp``
-  2. Copy the ``environments/simp/rsync`` directory from this repository into ``/var/simp/environments/simp``
-  3. ``cd /var/simp/environments/simp/rsync``
+  1. ``mkdir -p /usr/share/simp/environments``
+  2. Copy the ``rsync`` directory from this repository into ``/usr/share/simp/environments``
+  3. ``cd /usr/share/simp/environments/rsync``
   4. ``setfacl --restore=.rsync.facl 2>/dev/null``
 
+####  To create a new environment
+  1. ``mkdir -p /var/simp/environments/<new-env name>``
+  2.  rsync -a ``/usr/share/simp/environments/rsync`` ``/var/simp/environments/<new-env name>``
+  3. ``cd /var/simp/environments/<new-env name>/rsync``
+  4. ``setfacl --restore=.rsync.facl 2>/dev/null``
 #### Restore the SELinux Contexts
 
-  1. ``cd`` into the cloned repository
-  2. ``cd build/selinux``
-  3. ``make -f /usr/share/selinux/devel/Makefile``
-  4. ``cp *.pp /usr/share/selinux/packages``
-  5. ``/usr/sbin/semodule -n -i /usr/share/selinux/packages/simp-rsync.pp``
-  6. ``/usr/sbin/load_policy``
-  7. ``/sbin/fixfiles -R simp-rsync restore
+ simp-environments-skeleton contains the selinux profile.
+ The selinux profile was moved to simp-environments to because
+ the two profiles were oversriting each other.
+ 
+Follow the instructions in that module to build the selinux policy,
+(it is done automatically if installed from rpm) and then run: 
+
+
+  1. ``/sbin/fixfiles -R simp-environment restore

@@ -65,7 +65,7 @@ tar --exclude-vcs -cf - rsync | (cd %{buildroot}/%{prefix} && tar -xBf -)
 %defattr(0640,root,root,0750)
 %doc CONTRIBUTING.md LICENSE README.md
 %config %{rsync_dir}/.rsync.facl
-%config %attr(0751,root,root) %{rsync_dir}
+%config %attr(0750,root,root) %{rsync_dir}
 
 %pre
 #!/bin/sh

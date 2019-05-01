@@ -23,23 +23,24 @@ end
 %global rsync_dir /usr/share/simp/environments/rsync
 %global current_date %(date)
 
-Summary: SIMP rsync repository
-Name: simp-rsync
-Version: 6.3.0
+Summary: SIMP rsync skeleton
+Name: simp-rsync-skeleton
+Version: 7.0.0
 Release: 0%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
-Requires: simp-environment >= 6.4.0
+Requires: simp-environment-skeleton >= 7.0.0
+Requires: simp-environment-selinux-policy >= 7.0.0
 Requires: acl
 
 Provides: simp_rsync_filestore = %{version}
 Obsoletes: simp_rsync_filestore >= 1.0.0
 Buildarch: noarch
 
-Prefix: /usr/share/simp/environments
+Prefix: /usr/share/simp/environment-skeleton
 
 %description
 Contains SIMP items that are likely to be manipulated by the user and/or too

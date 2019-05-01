@@ -3,31 +3,6 @@
 require 'simp/rake'
 
 class RsyncPkg < Simp::Rake::Pkg
-  def define_clamsync
-    clambase = 'rsync/Global/clamav'
-
-    namespace :pkg do
-      desc <<-EOM
-        Sync the ClamAV databases
-        Update the build/freshclam.conf file to suit your environment if you want to
-        download from anywhere besides the official ClamAV mirrors.
-      EOM
-      task :clamsync do
-        mkdir(clambase) unless File.exist?(clambase)
-        puts '================================================================================'
-        if ENV['SIMP_BUILD_freshclam'] != 'no'
-          puts '#### Beginning freshclam update (because SIMP_BUILD_freshclam != no)'
-          verbose(true) { sh %{freshclam --config-file=build/freshclam.conf} }
-        else
-          puts '#### Skipping freshclam update (because SIMP_BUILD_freshclam = no)'
-          %w[bytecode.cld bytecode.cvd daily.cld daily.cvd main.cld main.cvd].each{|file| %x{touch #{clambase}/#{file}}}
-        end
-        puts '================================================================================'
-        rm("#{clambase}/mirrors.dat") if File.exist?("#{clambase}/mirrors.dat")
-      end
-    end
-  end
-
   def define_check_facl
     desc "Check the .rsync.facl file for unknown files"
     task :check_facl do
@@ -102,11 +77,9 @@ class RsyncPkg < Simp::Rake::Pkg
   end
 
   def define
-    #define_clamsync
     define_check_facl
     super
     # Add on the needed prereqs
-    #Rake::Task['pkg:tar'].enhance([:clamsync, :check_facl])
     Rake::Task['pkg:tar'].enhance([:check_facl])
   end
 end

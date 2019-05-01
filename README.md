@@ -1,3 +1,14 @@
+<!-- vim-markdown-toc GFM -->
+
+* [SIMP Rsync](#simp-rsync)
+  * [Notes on Building](#notes-on-building)
+  * [Usage](#usage)
+    * [Copy the Repository to the skeleton directory](#copy-the-repository-to-the-skeleton-directory)
+    * [To create a new environment](#to-create-a-new-environment)
+    * [Restore the SELinux Contexts](#restore-the-selinux-contexts)
+
+<!-- vim-markdown-toc -->
+
 ## SIMP Rsync
 
 This is the default data store for the SIMP Rsync content.
@@ -17,11 +28,12 @@ When updating this repository, you **must** ensure that you update the
 
 ### Notes on Building
 
-This rpm requires simp-environment-skeleton.  That contains the selinux contexts for
-simp, which include the context for the rsync directories.
+This RPM requires ``simp-environment-selinux-policy`` which contains the
+selinux contexts for SIMP, including the context for the ``rsync`` directories.
+
 To build the RPMs for this repository, you will need to enable the *earliest*
-EL6 and EL7 repositories for Mock so that it can use an SELinux Development
-stack that is guaranteed to work.
+EL6 and EL7 repositories for your development system so that it can use an
+SELinux Development stack that is guaranteed to work.
 
 If you are using the SIMP global build system, you should not need to make any
 changes to your environment.
@@ -52,8 +64,8 @@ gpgcheck=1
 To get full functionality out of the SIMP modules, particularly, the `simp`
 module itself, you need to perform the following operations:
 
-**NOTE:** If you're using the RPM, it does all of this for you and is the
-recommended method for installing these files.
+**NOTE:** If you're using the ``simp-environment-skeleton`` RPM, all of this is
+done for you and is the recommended method for installing these files.
 
 #### Copy the Repository to the skeleton directory
 
@@ -67,14 +79,11 @@ recommended method for installing these files.
   2.  rsync -a ``/usr/share/simp/environments/rsync`` ``/var/simp/environments/<new-env name>``
   3. ``cd /var/simp/environments/<new-env name>/rsync``
   4. ``setfacl --restore=.rsync.facl 2>/dev/null``
+
 #### Restore the SELinux Contexts
 
- simp-environments-skeleton contains the selinux profile.
- The selinux profile was moved to simp-environments to because
- the two profiles were oversriting each other.
- 
-Follow the instructions in that module to build the selinux policy,
-(it is done automatically if installed from rpm) and then run: 
-
+If required, follow the instructions in the ``simp-environment-skeleton``
+module to build the necessary SELinux policy, (it is done automatically if
+installed from the ``simp-environment-selinux-policy`` RPM) and then run:
 
   1. ``/sbin/fixfiles -R simp-environment restore

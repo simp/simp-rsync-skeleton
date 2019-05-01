@@ -20,7 +20,6 @@ end
 }
 
 %global _binaries_in_noarch_packages_terminate_build 0
-%global rsync_dir /usr/share/simp/environments/rsync
 %global current_date %(date)
 
 Summary: SIMP rsync skeleton
@@ -65,14 +64,14 @@ tar --exclude-vcs -cf - rsync | (cd %{buildroot}/%{prefix} && tar -xBf -)
 %files
 %defattr(0640,root,root,0750)
 %doc CONTRIBUTING.md LICENSE README.md
-%config %{rsync_dir}/.rsync.facl
-%config %attr(0750,root,root) %{rsync_dir}
+%config %{prefix}/rsync/.rsync.facl
+%config %attr(0750,root,root) %{prefix}/rsync
 
 %pre
 #!/bin/sh
 # Remove the directories that we're going to replace with symlinks.
-if [ -d %{rsync_dir} ]; then
-  for dir in `find %{rsync_dir} -type d -name 'linux-install'`; do
+if [ -d %{prefix}/rsync ]; then
+  for dir in `find %{prefix}/rsync -type d -name 'linux-install'`; do
   (
     cd $dir
     rm -rf rhel{5,6,7}_i386
@@ -83,8 +82,8 @@ fi
 
 # Make sure upgrades work properly!
 if [ $1 == 2 ]; then
-  if [ -d %{rsync_dir} ]; then
-    for dir in `find %{rsync_dir} -type d -name 'bind_dns'`; do
+  if [ -d %{prefix}/rsync ]; then
+    for dir in `find %{prefix}/rsync -type d -name 'bind_dns'`; do
     (
       cd $dir/..
 
@@ -102,7 +101,7 @@ fi
 #!/bin/sh
 # Post installation stuff
 
-cd %{rsync_dir};
+cd %{prefix}/rsync;
 
 # Create a CentOS link if a directory or link doesn't exist
 for dir in `find . -type d -name 'RedHat'`; do
@@ -124,8 +123,8 @@ setfacl --restore=.rsync.facl 2>/dev/null;
 # Only do this on uninstall
 if [ $1 -eq 0 ]; then
   # Clean up the CentOS link if present
-  if [ -d %{rsync_dir} ]; then
-    find %{rsync_dir} -type l -name 'CentOS' -delete
+  if [ -d %{prefix}/rsync ]; then
+    find %{prefix}/rsync -type l -name 'CentOS' -delete
   fi
 fi
 

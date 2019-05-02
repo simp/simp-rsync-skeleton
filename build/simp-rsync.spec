@@ -32,7 +32,7 @@ Source: %{name}-%{version}-%{release}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
 Requires: simp-environment-skeleton >= 7.0.0
-Requires: simp-environment-selinux-policy >= 7.0.0
+Requires: simp-environment-selinux-policy >= 1.0.0
 Requires: acl
 
 Provides: simp_rsync_filestore = %{version}

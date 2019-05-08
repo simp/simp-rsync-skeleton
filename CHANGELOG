@@ -1,4 +1,10 @@
-* Mon Mar 25 2019 Jim Anderson <thesemicolons@protonmail.com> - 6.2.2-0
+* Wed Apr 24 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 7.0.0-0
+- Renamed to simp-rsync-skeleton. The last release of simp-rsync provides a
+  stub for not removing files that are currently in place upon system upgrade.
+- Updated Rsync to install under the skeleton directory instead
+  of in the active environment directories.
+
+* Mon Mar 25 2019 Jim Anderson <thesemicolons@protonmail.com> - 6.3.0-0
 - Updated permissions on rsync and rsync/Global.
 - Changed ownership of rsync/Global/clamav.
 
@@ -244,6 +250,6 @@
 * Tue Oct 20 2009 Maintenance 0.1-12
 - Added directories to support snmp.
 
-* Thu Oct 1 2009 Maintenance 0.1-11
+* Thu Oct 01 2009 Maintenance 0.1-11
 - Fixed /etc/postfix directory permissions
 

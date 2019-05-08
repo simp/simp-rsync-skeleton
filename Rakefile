@@ -3,38 +3,13 @@
 require 'simp/rake'
 
 class RsyncPkg < Simp::Rake::Pkg
-  def define_clamsync
-    clambase = 'environments/simp/rsync/Global/clamav'
-
-    namespace :pkg do
-      desc <<-EOM
-        Sync the ClamAV databases
-        Update the build/freshclam.conf file to suit your environment if you want to
-        download from anywhere besides the official ClamAV mirrors.
-      EOM
-      task :clamsync do
-        mkdir(clambase) unless File.exist?(clambase)
-        puts '================================================================================'
-        if ENV['SIMP_BUILD_freshclam'] != 'no'
-          puts '#### Beginning freshclam update (because SIMP_BUILD_freshclam != no)'
-          verbose(true) { sh %{freshclam --config-file=build/freshclam.conf} }
-        else
-          puts '#### Skipping freshclam update (because SIMP_BUILD_freshclam = no)'
-          %w[bytecode.cld bytecode.cvd daily.cld daily.cvd main.cld main.cvd].each{|file| %x{touch #{clambase}/#{file}}}
-        end
-        puts '================================================================================'
-        rm("#{clambase}/mirrors.dat") if File.exist?("#{clambase}/mirrors.dat")
-      end
-    end
-  end
-
   def define_check_facl
     desc "Check the .rsync.facl file for unknown files"
     task :check_facl do
       # First, check to make sure that we actually have a facl entry for
       # everything in our tree.
 
-      Dir.chdir('environments/simp/rsync') do
+      Dir.chdir('rsync') do
         facl_files = File.read('.rsync.facl').split("\n").collect{|x| if x =~ /^#\s+file:\s+(.*)\s*$/ then x = $1 end }.compact
         present_files = []
         Find.find('.') do |path|
@@ -102,16 +77,14 @@ class RsyncPkg < Simp::Rake::Pkg
   end
 
   def define
-    #define_clamsync
     define_check_facl
     super
     # Add on the needed prereqs
-    #Rake::Task['pkg:tar'].enhance([:clamsync, :check_facl])
     Rake::Task['pkg:tar'].enhance([:check_facl])
   end
 end
 
 RsyncPkg.new(File.dirname(__FILE__)) do |t|
-  t.ignore_changes_list << "#{t.pkg_name}/environments/simp/rsync/Global/clamav"
-  ::CLOBBER.include("#{t.base_dir}/environments/simp/rsync/Global/clamav/*")
+  t.ignore_changes_list << "#{t.pkg_name}/rsync/Global/clamav"
+  ::CLOBBER.include("#{t.base_dir}/rsync/Global/clamav/*")
 end

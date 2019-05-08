@@ -25,7 +25,7 @@ end
 Summary: SIMP rsync skeleton
 Name: simp-rsync-skeleton
 Version: 7.0.0
-Release: 0%{?dist}
+Release: 0
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -35,8 +35,6 @@ Requires: simp-environment-skeleton >= 7.0.0
 Requires: simp-environment-selinux-policy >= 1.0.0
 Requires: acl
 
-Provides: simp_rsync_filestore = %{version}
-Obsoletes: simp_rsync_filestore >= 1.0.0
 Buildarch: noarch
 
 Prefix: /usr/share/simp/environment-skeleton

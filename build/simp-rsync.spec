@@ -111,7 +111,7 @@ fi
 # Post uninstall stuff
 %changelog
 * Tue May 14 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.2.1-1
-- Remove dependecy on simp-environemt, which will be removed in
+- Remove dependency on simp-environment, which will be removed in
   SIMP 6.4 and renamed to simp-environment-skeleton
 - Add dependency for simp-environment-selinux-policy
   to make sure selinux policy for /var/simp directory is not

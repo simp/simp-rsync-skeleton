@@ -24,7 +24,9 @@ jobs:
     - stage: check
       rvm: 2.4.1
       script:
-        - bundle exec rake pkg:compare_latest_tag
+        # This release is forked from a previous tag.  The compare
+        # latest tag check is not valid.
+        # - bundle exec rake pkg:compare_latest_tag
         - bundle exec rake pkg:create_tag_changelog
 
     - stage: deploy

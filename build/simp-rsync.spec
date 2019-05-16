@@ -5,14 +5,14 @@
 Summary: SIMP rsync repository
 Name: simp-rsync
 Version: 6.2.1
-Release: 0%{?dist}
+Release: 1%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
-Requires: simp-environment >= 6.2.5
 Requires: acl
+Requires: simp-environment-selinux-policy
 
 Provides: simp_rsync_filestore = %{version}
 Obsoletes: simp_rsync_filestore >= 1.0.0
@@ -110,6 +110,17 @@ fi
 %postun
 # Post uninstall stuff
 %changelog
+* Tue May 14 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.2.1-1
+- Remove dependency on simp-environment, which will be removed in
+  SIMP 6.4 and renamed to simp-environment-skeleton
+- Add dependency for simp-environment-selinux-policy
+  to make sure selinux policy for /var/simp directory is not
+  removed.
+- This module is not needed for new installs after 6.4 and is replaced
+  by simp-rsync-skeleton.  This module should not
+  be removed in existing systems if there is a `simp` environment because
+  it will remove the files under /var/simp/environments/simp/rsync.
+
 * Thu Apr 26 2018 Liz Nemsick <lnemsick.simp@gmail.com> - 6.2.1-0
 - Added logic in dhcpd.conf to select the appropriate PXEboot file
   based on the boot type (BIOS or UEFI).

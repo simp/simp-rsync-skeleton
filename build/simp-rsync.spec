@@ -66,34 +66,6 @@ tar --exclude-vcs -cf - rsync | (cd %{buildroot}/%{prefix} && tar -xBf -)
 %config %attr(0750,root,root) %{prefix}/rsync
 
 %pre
-#!/bin/sh
-# Remove the directories that we're going to replace with symlinks.
-if [ -d %{prefix}/rsync ]; then
-  for dir in `find %{prefix}/rsync -type d -name 'linux-install'`; do
-  (
-    cd $dir
-    rm -rf rhel{5,6,7}_i386
-    rm -rf rhel{5,6,7}_x86_64
-  )
-  done
-fi
-
-# Make sure upgrades work properly!
-if [ $1 == 2 ]; then
-  if [ -d %{prefix}/rsync ]; then
-    for dir in `find %{prefix}/rsync -type d -name 'bind_dns'`; do
-    (
-      cd $dir/..
-
-      tmpdir=`ls bind_dns | grep -ve "\(your.domain\|default\)" | head -1`
-
-      if [ -n "$tmpdir" ] && [ ! -d 'bind_dns/default' ]; then
-        ln -s $tmpdir bind_dns/default
-      fi
-    )
-    done
-  fi
-fi
 
 %post
 #!/bin/sh

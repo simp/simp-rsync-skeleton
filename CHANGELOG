@@ -1,6 +1,7 @@
 * Wed May 22 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 7.0.1-0
 - Removed OBE *.rpmnew deletion logic in %post
 - Removed OBE OS symlink login in %post and %preun
+- Removed OBE %pre logic
 
 * Wed Apr 24 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 7.0.0-0
 - Renamed to simp-rsync-skeleton. The last release of simp-rsync provides a

@@ -24,7 +24,7 @@ end
 
 Summary: SIMP rsync skeleton
 Name: simp-rsync-skeleton
-Version: 7.0.0
+Version: 7.0.1
 Release: 0
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
@@ -99,35 +99,11 @@ fi
 #!/bin/sh
 # Post installation stuff
 
-cd %{prefix}/rsync;
-
-# Create a CentOS link if a directory or link doesn't exist
-for dir in `find . -type d -name 'RedHat'`; do
-  (
-    cd $dir/..
-
-    if [ ! -d "CentOS" ] && [ ! -h "CentOS" ]; then
-      ln -sf RedHat CentOS;
-    fi
-  )
-done
-
-find . -type f -name "*.rpmnew" -delete
-
-# Set the FACLs on the files so that we don't make a Windows box
-setfacl --restore=.rsync.facl 2>/dev/null;
-
 %preun
-# Only do this on uninstall
-if [ $1 -eq 0 ]; then
-  # Clean up the CentOS link if present
-  if [ -d %{prefix}/rsync ]; then
-    find %{prefix}/rsync -type l -name 'CentOS' -delete
-  fi
-fi
 
 %postun
 # Post uninstall stuff
+
 %changelog
 %{lua:
 -- Finally, the CHANGELOG

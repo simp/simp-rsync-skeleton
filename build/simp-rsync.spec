@@ -99,11 +99,6 @@ fi
 #!/bin/sh
 # Post installation stuff
 
-cd %{prefix}/rsync;
-
-# Set the FACLs on the files so that we don't make a Windows box
-setfacl --restore=.rsync.facl 2>/dev/null;
-
 %preun
 
 %postun

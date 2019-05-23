@@ -5,7 +5,7 @@
 Summary: SIMP rsync repository
 Name: simp-rsync
 Version: 6.2.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz

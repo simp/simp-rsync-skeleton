@@ -111,7 +111,7 @@ fi
 %changelog
 * Tue May 21 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.2.1-2
 - Remove dependency for simp-environment-selinux-policy.  It has been moved
-  to simp-environment.  It caused a confilict when upgrading.
+  to simp-environment.  It caused a conflict when upgrading.
  
 * Tue May 14 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.2.1-1
 - Remove dependency on simp-environment, which will be removed in

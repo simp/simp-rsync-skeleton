@@ -5,14 +5,14 @@
 Summary: SIMP rsync repository
 Name: simp-rsync
 Version: 6.2.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: rsync
 Requires: acl
-Requires: simp-environment-selinux-policy
+Requires: simp-selinux-policy
 
 Provides: simp_rsync_filestore = %{version}
 Obsoletes: simp_rsync_filestore >= 1.0.0
@@ -110,6 +110,10 @@ fi
 %postun
 # Post uninstall stuff
 %changelog
+* Thu Jun 27 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 6.2.1-2
+- Changed Require for simp-environment-selinux-policy to one
+  for simp-selinux-policy, as that package has been renamed.
+
 * Tue May 14 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.2.1-1
 - Remove dependency on simp-environment, which will be removed in
   SIMP 6.4 and renamed to simp-environment-skeleton

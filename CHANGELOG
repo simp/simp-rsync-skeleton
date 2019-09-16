@@ -1,3 +1,7 @@
+* Fri Sep 13 2019 Robert Clark <rbclark@mitre.org> - 7.0.2-0
+- Removed rndc.key from repository to prevent users from accidentally using
+  a published secret key.
+
 * Wed May 22 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 7.0.1-0
 - Removed OBE *.rpmnew deletion logic in %post
 - Removed OBE OS symlink login in %post and %preun
@@ -257,4 +261,3 @@
 
 * Thu Oct 01 2009 Maintenance 0.1-11
 - Fixed /etc/postfix directory permissions
-

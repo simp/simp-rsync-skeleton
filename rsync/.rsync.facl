@@ -397,13 +397,6 @@ user::rw-
 group::r--
 other::---
 
-# file: RedHat/6/bind_dns/default/named/etc/rndc.key
-# owner: root
-# group: 25
-user::rw-
-group::r--
-other::---
-
 # file: RedHat/6/bind_dns/default/named/etc/named.conf
 # owner: root
 # group: 25
@@ -608,13 +601,6 @@ group::r-x
 other::---
 
 # file: RedHat/7/bind_dns/default/named/etc/zones/your.domain
-# owner: root
-# group: 25
-user::rw-
-group::r--
-other::---
-
-# file: RedHat/7/bind_dns/default/named/etc/rndc.key
 # owner: root
 # group: 25
 user::rw-

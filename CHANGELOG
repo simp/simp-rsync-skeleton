@@ -1,3 +1,6 @@
+* Tue Dec 17 2019 Michael Morrone <michael.morrone@onyxpoint.com> - 7.0.2-0
+- Added mitigation for CVE-2019-6477 to RedHat 7 named.conf 
+
 * Tue Nov 19 2019 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 7.0.2-0
 - Removed rndc.key from RedHat 6
 - Update rsync.facl file.

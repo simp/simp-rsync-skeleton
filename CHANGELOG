@@ -1,3 +1,8 @@
+* Wed Sep 23 2020 Liz Nemsick <lnemsick.simp@gmail.com> - 7.0.3-0
+- Fixed a bug in which the name of the rndc key in the sample named.conf
+  files did not match the name of the automatically-generated key in
+  /etc/rndc.key. This mismatch would prevent the named service from starting.
+
 * Tue Dec 17 2019 Michael Morrone <michael.morrone@onyxpoint.com> - 7.0.2-0
 - Added mitigation for CVE-2019-6477 to RedHat 7 named.conf 
 

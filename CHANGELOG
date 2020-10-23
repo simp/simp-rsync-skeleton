@@ -1,3 +1,8 @@
+* Fri Oct 23 2020 Liz Nemsick <lnemsick.simp@gmail.com> - 7.0.4-0
+- Modernized the README for tftpboot files. It now explains
+  which boot files for the tftpboot server are required when
+  `tftpboot:use_os_files` if set to `false`.
+
 * Wed Sep 23 2020 Liz Nemsick <lnemsick.simp@gmail.com> - 7.0.3-0
 - Fixed a bug in which the name of the rndc key in the sample named.conf
   files did not match the name of the automatically-generated key in

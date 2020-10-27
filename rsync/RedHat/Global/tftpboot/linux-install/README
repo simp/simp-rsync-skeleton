@@ -1,10 +1,21 @@
-You will need to copy the pxelinux.0 and the appropriate kickstart images for
-your systems into this directory as well as the 'msgs' directory from your
-distribution.
+This directory contains the boot, kernel, and root filesystem files
+for PXE booting clients.
 
-By default, each set of files should be placed into a directory of the form
-'operatingsystem-version-architecture'.
+* The kernel and root filesystem files for each OS, should be placed
+  into a directory of the form 'operatingsystem-version-architecture'.
+  For example for CentOS 7.8.2003 x86_64
 
-For Example:
+    centos-7.8.2003-x86_64/initrd.img
+    centos-7.8.2003-x86_64/TRANS.TBL
+    centos-7.8.2003-x86_64/vmlinuz
 
-'RHEL 6 x86_64' would be 'rhel-6-x86_64'
+* If you are not using the tftpboot module to populate boot files
+  on the tftboot server (i.e., have explictly set `tftpboot::use_os_files`
+  to `false`), you will also need to include the boot files appropriate
+  for the OS of the tftpboot server. The EFI boot files should be in an
+  efi directory.  For example, for CentOS 7, these files would be:
+
+    menu.c32
+    pxelinux.0
+    efi/grubx64.efi
+    efi/shim.efi

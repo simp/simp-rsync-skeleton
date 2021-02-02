@@ -1,3 +1,10 @@
+* Tue Feb 02 2021 Liz Nemsick <lnemsick.simp@gmail.com> - 7.1.0-1
+- Added support for EL8
+- Removed support for EL6
+- Removed dynamic files from the list of files to rsync
+  - RedHat/7/bind_dns/default/named/var/run/named/named.pid
+  - RedHat/7/bind_dns/default/named/var/named/data/named_mem_stats.txt
+
 * Fri Oct 23 2020 Liz Nemsick <lnemsick.simp@gmail.com> - 7.0.4-0
 - Modernized the README for tftpboot files. It now explains
   which boot files for the tftpboot server are required when

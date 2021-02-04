@@ -88,9 +88,9 @@ tar_check:
   script:
     - 'command - v rpm || if command -v apt-get; then apt-get update; apt-get install -y rpm; fi ||:'
     - 'bundle exec rake clean'
-    - 'cat ~/.rpmmacros'
     - 'SIMP_RPM_dist=.el7 bundle exec rake pkg:tar'
     - 'ls -l dist/simp-rsync-skeleton-*.tar.gz'
+  allow_failure: true  # Blocked until SIMP-5660
 
 releng_checks:
   <<: *setup_bundler_env

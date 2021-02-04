@@ -73,21 +73,22 @@ image: ruby:2.5
 # Tests
 # ==============================================================================
 
-lint_tests:
-  stage: 'validation'
-  tags: ['docker']
-  <<: *setup_bundler_env
-  script:
-    - 'bundle exec rake syntax'
-    - 'bundle exec rake lint'
-    - 'bundle exec rake yaml_validate'
 
-spec_tests:
+facl_check:
   stage: 'validation'
   tags: ['docker']
   <<: *setup_bundler_env
   script:
-    - 'bundle exec rake spec'
+    - 'bundle exec rake check_facl'
+
+tar_check:
+  stage: 'validation'
+  tags: ['docker']
+  <<: *setup_bundler_env
+  script:
+    - 'bundle exec rake clean'
+    - 'bundle exec rake pkg:tar'
+    - 'ls -l dist/simp-rsync-skeleton-*.tar.gz'
 
 releng_checks:
   <<: *setup_bundler_env

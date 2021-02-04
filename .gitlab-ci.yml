@@ -86,6 +86,7 @@ tar_check:
   tags: ['docker']
   <<: *setup_bundler_env
   script:
+    - 'command - v rpm || if command -v apt-get; then apt-get update; apt-get install -y rpm; fi ||:'
     - 'bundle exec rake clean'
     - 'bundle exec rake pkg:tar'
     - 'ls -l dist/simp-rsync-skeleton-*.tar.gz'

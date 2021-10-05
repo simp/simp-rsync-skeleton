@@ -25,7 +25,7 @@ end
 Summary: SIMP rsync skeleton
 Name: simp-rsync-skeleton
 Version: 7.1.1
-Release: 1
+Release: 1%{?dist}
 License: Apache License, Version 2.0 and ISC
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz

@@ -1,3 +1,6 @@
+* Tue Oct 05 2021 Trevor Vaughan <tvaughan@onyxpoint.com> - 7.1.1-1
+- Add weak dependencies for EL8
+
 * Tue Feb 02 2021 Liz Nemsick <lnemsick.simp@gmail.com> - 7.1.0-1
 - Added support for EL8
 - Removed support for EL6

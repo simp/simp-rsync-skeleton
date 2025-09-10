@@ -13,7 +13,7 @@ variables:
   BUNDLE_BIN:        .vendor/gem_install/bin
   BUNDLE_NO_PRUNE:   'true'
 
-image: ruby:2.5
+image: ruby:2.7
 
 # bundler dependencies and caching
 #

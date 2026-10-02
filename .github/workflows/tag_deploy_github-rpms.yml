@@ -38,7 +38,7 @@ on:
       - '[0-9]+\.[0-9]+\.[0-9]+\-[a-z]+[0-9]+'
 
 env:
-  PUPPET_VERSION: '~> 7'
+  PUPPET_VERSION: '~> 8'
 
 jobs:
   create-github-release:
@@ -106,13 +106,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TARGET_REPO: ${{ github.repository }}
-    strategy:
-      matrix:
-        os:
-          - centos7
-          - centos8
     steps:
-      - name: Trigger RPM release workflow (${{ matrix.os }})
+      # The build-OS matrix lives in release_rpms.yml (one dispatch builds
+      # every supported EL version) -- see simp/puppetsync#84
+      - name: Trigger RPM release workflow
         uses: actions/github-script@v9
         env:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
@@ -120,7 +117,7 @@ jobs:
         with:
           github-token: ${{ secrets.SIMP_AUTO_GITHUB_TOKEN__REPO_SCOPE }}
           script: |
-            console.log( `== Building tag: '${ process.env.TARGET_TAG }' for os '${{ matrix.os}}'` )
+            console.log( `== Building tag: '${ process.env.TARGET_TAG }'` )
             const [owner, repo] = process.env.TARGET_REPO.split('/')
             await github.request('POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches', {
               owner: owner,
@@ -130,9 +127,8 @@ jobs:
               inputs: {
                 release_tag: process.env.TARGET_TAG,
                 clean: 'no',
-                clobber: 'yes',
-                build_container_os: '${{ matrix.os }}'
+                clobber: 'yes'
               }
             }).then((result) => {
-              console.log( `== Submitted workflow dispatch to build RPMs from ${{ matrix.os }}: status ${result.status}` )
+              console.log( `== Submitted workflow dispatch to build RPMs: status ${result.status}` )
             })

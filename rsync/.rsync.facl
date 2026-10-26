@@ -212,7 +212,7 @@ other::r-x
 # owner: root
 # group: 25
 user::rwx
-group::r-x
+group::rwx
 other::---
 
 # file: RedHat/7/bind_dns/default/named/var/named/named.root
@@ -258,10 +258,10 @@ group::r--
 other::---
 
 # file: RedHat/7/bind_dns/default/named/var/named/slaves
-# owner: root
+# owner: 25
 # group: 25
 user::rwx
-group::r-x
+group::rwx
 other::---
 
 # file: RedHat/7/bind_dns/default/named/var/named/slaves/my.ddns.internal.zone.db
@@ -300,10 +300,10 @@ group::r--
 other::---
 
 # file: RedHat/7/bind_dns/default/named/var/named/data
-# owner: root
+# owner: 25
 # group: 25
 user::rwx
-group::r-x
+group::rwx
 other::---
 
 # file: RedHat/7/bind_dns/default/named/var/named/named.local
@@ -394,7 +394,7 @@ other::r-x
 # owner: root
 # group: 25
 user::rwx
-group::r-x
+group::rwx
 other::---
 
 # file: RedHat/8/bind_dns/default/named/var/named/named.root
@@ -440,10 +440,10 @@ group::r--
 other::---
 
 # file: RedHat/8/bind_dns/default/named/var/named/slaves
-# owner: root
+# owner: 25
 # group: 25
 user::rwx
-group::r-x
+group::rwx
 other::---
 
 # file: RedHat/8/bind_dns/default/named/var/named/slaves/my.ddns.internal.zone.db
@@ -482,10 +482,10 @@ group::r--
 other::---
 
 # file: RedHat/8/bind_dns/default/named/var/named/data
-# owner: root
+# owner: 25
 # group: 25
 user::rwx
-group::r-x
+group::rwx
 other::---
 
 # file: RedHat/8/bind_dns/default/named/var/named/named.local

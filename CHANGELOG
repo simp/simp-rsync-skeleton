@@ -1,3 +1,10 @@
+* Mon Nov 23 2026 Hazel Caballero <hazel@sicura.us> - 7.2.0-1
+- Added `RedHat/9` and `RedHat/10` trees. Their sample `named.conf` drops
+  `query-source port 53`, which BIND 9.16 and later reject.
+- Added `AlmaLinux`, `OracleLinux` and `Rocky` as symlinks to `RedHat`, so
+  clients on those distributions find their OS-specific shares.
+- Removed the `RedHat/7` tree
+
 * Tue Oct 05 2021 Trevor Vaughan <tvaughan@onyxpoint.com> - 7.1.1-1
 - Add weak dependencies for EL8
 

@@ -1,3 +1,15 @@
+* Mon Nov 23 2026 Hazel Caballero <hazel@sicura.us> - 7.2.0-1
+- Added `RedHat/9` and `RedHat/10` trees
+- Removed `query-source port 53` from the `RedHat/8` sample `named.conf` and
+  left it out of the new trees. BIND 9.16 and later reject it.
+- Added `AlmaLinux`, `OracleLinux` and `Rocky` as symlinks to `RedHat`, so
+  clients on those distributions find their OS-specific shares. On upgrade, rpm
+  saves a directory at one of those paths in the installed skeleton as
+  `<name>.rpmorig`.
+- Existing environments are not changed. Copy the new directories and links
+  from the skeleton into each environment's `rsync` directory and reapply
+  `.rsync.facl`.
+
 * Tue Oct 05 2021 Trevor Vaughan <tvaughan@onyxpoint.com> - 7.1.1-1
 - Add weak dependencies for EL8
 

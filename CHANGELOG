@@ -1,3 +1,13 @@
+* Thu Oct 22 2026 Steven Pritchard <steve@sicura.us> - 7.1.2-1
+- Make `bind_dns/default/named/var/named` writable by the `named` group, and
+  make its `data` and `slaves` subdirectories owned by and writable by
+  `named`, as BIND requires and as the bind packages ship them. Existing
+  installations keep their current `.rsync.facl` (it is a `%config` file); to
+  apply the change to an existing tree, run:
+  - `chmod g+w <rsync>/RedHat/*/bind_dns/*/named/var/named`
+  - `chown 25 <rsync>/RedHat/*/bind_dns/*/named/var/named/{data,slaves}`
+  - `chmod g+w <rsync>/RedHat/*/bind_dns/*/named/var/named/{data,slaves}`
+
 * Tue Oct 05 2021 Trevor Vaughan <tvaughan@onyxpoint.com> - 7.1.1-1
 - Add weak dependencies for EL8
 
